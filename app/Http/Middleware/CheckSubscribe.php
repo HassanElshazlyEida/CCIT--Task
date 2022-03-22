@@ -16,7 +16,7 @@ class CheckSubscribe
      */
     public function handle(Request $request, Closure $next)
     {
-        dd( $request->user()->subscriptions());
+       
         if ($request->user() &&   $request->user()->subscribed('monthly')) {
             // This user is subscribed to plan
             return redirect()->route('profile.edit');

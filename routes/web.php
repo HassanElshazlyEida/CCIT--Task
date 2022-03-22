@@ -57,7 +57,7 @@ Route::group(['middleware' => 'auth'], function () {
 | Admin Routes
 |--------------------------------------------------------------------------
 */
-Route::group(['middleware' => 'role:administrator','prefix'=>'admin'], function () {
+Route::group(['middleware' => ['auth','role:administrator'],'prefix'=>'admin'], function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 	Route::resource('user', 'UserController', ['except' => ['show']]);
     Route::POST('user/status','UserController@status')->name('user.status');
