@@ -11,12 +11,12 @@
                     <div class="card-header bg-transparent pb-5">
                         <div class="text-muted text-center mt-2 mb-3"><small>{{ __('Sign Up with') }}</small></div>
                         <div class="btn-wrapper text-center">
-                            <a href="{{route('sign-up.redirect',['method'=>'facebook'])}}" class="btn btn-neutral btn-icon">
-                                <span class="btn-inner--icon"><img src="{{ asset('argon') }}/img/icons/common/facebook.svg"></span>
+                            <a href="{{route('sign-up.redirect',['method'=>'facebook'])}}" class="btn btn-neutral ">
+                                <span class="btn-inner--icon"><img src="{{ asset('argon') }}/img/icons/common/facebook.svg " class="w-25"></span>
                                 <span class="btn-inner--text">{{ __('Facebook') }}</span>
                             </a>
-                            <a href="{{route('sign-up.callback',['method'=>'google'])}}" class="btn btn-neutral btn-icon">
-                                <span class="btn-inner--icon"><img src="{{ asset('argon') }}/img/icons/common/google.svg"></span>
+                            <a href="{{route('sign-up.callback',['method'=>'google'])}}" class="btn btn-neutral">
+                                <span class="btn-inner--icon"><img src="{{ asset('argon') }}/img/icons/common/google.svg" class="w-30"></span>
                                 <span class="btn-inner--text">{{ __('Google') }}</span>
                             </a>
                         </div>
@@ -25,7 +25,7 @@
                         <div class="text-center text-muted mb-4">
                             <small>{{ __('Or sign up with credentials') }}</small>
                         </div>
-                        <form role="form" method="GET" action="{{ route('payment_plan') }}">
+                        <form role="form" method="POST" action="{{ route('register') }}">
                             @csrf
 
                             <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }}">

@@ -95,6 +95,13 @@
                                     </a>
                                 </li>
                             @endif
+                            @if( ! request()->user()->subscribed('default'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('payment_plan') }}">
+                                        {{ __('Subscription Plan') }}
+                                    </a>
+                                </li>
+                            @endif
                         </ul>
                     </div>
                 </li>

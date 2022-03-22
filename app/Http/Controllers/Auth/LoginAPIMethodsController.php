@@ -23,9 +23,8 @@ class LoginAPIMethodsController extends Controller
     public function ApiCallback($method){
 
         $user= Socialite::driver($method)->stateless()->user();
-
         $this->login($user);
 
-        return redirect()->route('profile.edit');
+        return redirect()->route('payment_plan');
     }
 }

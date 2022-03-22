@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Laravel\Paddle\Billable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Laratrust\Traits\LaratrustUserTrait;
@@ -12,14 +13,17 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use LaratrustUserTrait,SoftDeletes;
+    use LaratrustUserTrait,SoftDeletes,Billable;
     use HasApiTokens, HasFactory, Notifiable;
 
-    public static $payment_plan = [
-        'montly' => 'monthly',
-        'yearly' => 'yearly'
-    ];
 
+
+    public function getActivateAttribute()
+    {
+        if(is_null($this->deleted_at))
+            return true;
+        return false;
+    }
     /**
      * The attributes that are mass assignable.
      *
@@ -29,7 +33,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'payment_plan'
     ];
 
     /**

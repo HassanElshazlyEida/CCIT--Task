@@ -2,40 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Plan;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\ProfileRequest;
 use App\Http\Requests\PasswordRequest;
+use App\Services\CreateUpdateUser;
+use Illuminate\Http\Request;
 
-class ProfileController extends Controller
+class ProfileController extends CreateUpdateUser
 {
-    /**
-     * Show the form for editing the profile.
-     *
-     * @return \Illuminate\View\View
-     */
     public function edit()
     {
-        return view('profile.edit',['plans'=>User::$payment_plan]);
+        return $this->edit_user(auth()->user(),route('profile.update'));
     }
-
-    /**
+        /**
      * Update the profile
      *
      * @param  \App\Http\Requests\ProfileRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(ProfileRequest $request)
+    public function update(ProfileRequest  $request)
     {
-        if (auth()->user()->id == 1) {
-            return back()->withErrors( __('You are not allowed to change data for a default user.'));
-        }
-
-        auth()->user()->update($request->all());
-
-        return back()->withStatus(__('Profile successfully updated.'));
+        return $this->update_user(auth()->user(),$request);
     }
-
     /**
      * Change the password
      *

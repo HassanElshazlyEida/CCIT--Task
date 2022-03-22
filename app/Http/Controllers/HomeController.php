@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Plan;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
@@ -32,7 +33,7 @@ class HomeController extends Controller
         $admins= Cache::remember('admins',60*60,function(){
             return User::whereRoleIs('administrator')->count();
         });
-        $plans=User::$payment_plan;
+
         return view('dashboard',['customers'=>$users,'admins'=>$admins]);
     }
 }

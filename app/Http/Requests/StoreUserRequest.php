@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Plan;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -12,18 +13,15 @@ class StoreUserRequest extends FormRequest
      *
      * @return bool
      */
-    public function __construct()
-    {
-        $this->user_plans = User::$payment_plan;
-    }
+
     public function authorize()
     {
         return true;
     }
-    protected function prepareForValidation(): void
-    {
-        $this->merge(session()->get('process_1') ?? []);
-    }
+    // protected function prepareForValidation(): void
+    // {
+    //     $this->merge(session()->get('process_1') ?? []);
+    // }
     /**
      * Get the validation rules that apply to the request.
      *
@@ -37,9 +35,7 @@ class StoreUserRequest extends FormRequest
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ];
 
-        if($this->request->get('payment_plan')){
-            $rules['payment_plan']= ['required', 'in:'.implode (",", $this->user_plans)];
-        }
+
         return $rules;
 
     }

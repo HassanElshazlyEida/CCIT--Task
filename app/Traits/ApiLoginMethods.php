@@ -18,8 +18,7 @@ trait ApiLoginMethods {
     }
 
     protected function login($user):void{
-
-        $login_user= User::firstOrCreate([
+        $login_user= User::withTrashed()->firstOrCreate([
             'email'=> $user->email ?? null,
         ],[
             'name'=> $user->name,

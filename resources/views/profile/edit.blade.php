@@ -2,7 +2,7 @@
 
 @section('content')
     @include('users.partials.header', [
-        'title' => __('Hello') . ' '. auth()->user()->name,
+        'title' => __('Hello') . ' '. $user->name,
         'description' => __('This is your profile page. You can see the progress you\'ve made with your work and manage your projects or assigned tasks'),
         'class' => 'col-lg-7'
     ])
@@ -18,7 +18,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form method="post" action="{{ route('profile.update') }}" autocomplete="off">
+                        <form method="post" action="{{ $route }}" autocomplete="off">
                             @csrf
                             @method('put')
 
@@ -44,7 +44,7 @@
                             <div class="pl-lg-4">
                                 <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }}">
                                     <label class="form-control-label" for="input-name">{{ __('Name') }}</label>
-                                    <input type="text" name="name" id="input-name" class="form-control form-control-alternative{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Name') }}" value="{{ old('name', auth()->user()->name) }}" required autofocus>
+                                    <input type="text" name="name" id="input-name" class="form-control form-control-alternative{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Name') }}" value="{{ old('name', $user->name) }}" required autofocus>
 
                                     @if ($errors->has('name'))
                                         <span class="invalid-feedback" role="alert">
@@ -54,7 +54,7 @@
                                 </div>
                                 <div class="form-group{{ $errors->has('email') ? ' has-danger' : '' }}">
                                     <label class="form-control-label" for="input-email">{{ __('Email') }}</label>
-                                    <input type="email" name="email" id="input-email" class="form-control form-control-alternative{{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="{{ __('Email') }}" value="{{ old('email', auth()->user()->email) }}" required>
+                                    <input type="email" name="email" id="input-email" class="form-control form-control-alternative{{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="{{ __('Email') }}" value="{{ old('email', $user->email) }}" required>
 
                                     @if ($errors->has('email'))
                                         <span class="invalid-feedback" role="alert">
@@ -62,29 +62,11 @@
                                         </span>
                                     @endif
                                 </div>
-                                <div class="form-group{{ $errors->has('payment_plan') ? ' has-danger' : '' }}">
-                                    <label class="form-control-label" for="input-name">{{ __('Plan') }}</label>
-                                    <div class="input-group input-group-alternative mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="ni ni-planet"></i></span>
-                                        </div>
-                                        <select  name="payment_plan"  class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}"  >
-                                            <option value="" selected > {{__("Select Payment Plan")}} </option>
-                                                @foreach ($plans as $plan)
-                                                    <option value="{{$plan}}" {{auth()->user()->payment_plan == $plan ? 'selected':''}}>{{$plan}} </option>
-                                                @endforeach
-                                        </select>
-                                </div>
-                                    @if ($errors->has('payment_plan'))
-                                        <span class="invalid-feedback" style="display: block;" role="alert">
-                                            <strong>{{ $errors->first('payment_plan') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
+
                                 <div class="form-group">
                                     <label class="form-control-label" for="input-name">{{ __('Role') }}</label>
                                     <select  name="roles"  class="form-control"  >
-                                            @foreach (auth()->user()->roles->pluck('name') as $role)
+                                            @foreach ($user->roles->pluck('name') as $role)
                                                 <option >{{$role}} </option>
                                             @endforeach
                                     </select>

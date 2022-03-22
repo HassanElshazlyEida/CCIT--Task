@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Plan;
 use App\Models\User;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProfileRequest extends FormRequest
@@ -15,7 +17,7 @@ class ProfileRequest extends FormRequest
      */
     public function __construct()
     {
-        $this->user_plans = User::$payment_plan;
+        $this->user_plans = Plan::all()->pluck('name')->toArray();
     }
     public function authorize()
     {
@@ -31,7 +33,7 @@ class ProfileRequest extends FormRequest
     {
         return [
             'name' => ['required', 'min:3'],
-            'email' => ['required', 'email', Rule::unique((new User)->getTable())->ignore(auth()->id())],
+            'email' => ['required', 'email', Rule::unique((new User)->getTable())->ignore(Route::getCurrentRoute()->user ? Route::getCurrentRoute()->user : auth()->id())],
             'payment_plan'=> ['required', 'in:'.implode (",", $this->user_plans)]
         ];
     }

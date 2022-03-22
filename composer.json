@@ -9,12 +9,14 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel-frontend-presets/argon": "^1.1",
+        "laravel/cashier-paddle": "^1.5",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/socialite": "^5.5",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
         "santigarcor/laratrust": "^7.1",
+        "yajra/laravel-datatables": "^1.5",
         "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {

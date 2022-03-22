@@ -22,19 +22,15 @@ use Illuminate\Support\Facades\Route;
 | Guest Routes
 |--------------------------------------------------------------------------
 */
-Route::group(['middleware' => 'guest'], function () {
 
-    Route::get('/', function () {
-        return view('welcome');
-    });
-    // Payment Plan
-    Route::get('payment_plan', 'UserController@payment_plan')->name('payment_plan');
-    // API LOGIN METHODS
-    Route::group(['prefix' => 'sign-up/{method}'], function () {
-        Route::get('redirect', 'Auth\LoginAPIMethodsController@ApiRedirect')->name('sign-up.redirect')->where(['method' => 'facebook|google']);
-        Route::get('callback', 'Auth\LoginAPIMethodsController@ApiCallback')->name('sign-up.callback')->where(['method' => 'facebook|google']);
-    });
+Route::get('/', function () {
+    return view('welcome');
+});
 
+ // API LOGIN METHODS
+Route::group(['prefix' => 'sign-up/{method}'], function () {
+    Route::get('redirect', 'Auth\LoginAPIMethodsController@ApiRedirect')->name('sign-up.redirect')->where(['method' => 'facebook|google']);
+    Route::get('callback', 'Auth\LoginAPIMethodsController@ApiCallback')->name('sign-up.callback')->where(['method' => 'facebook|google']);
 });
 /*
 |--------------------------------------------------------------------------
@@ -43,7 +39,15 @@ Route::group(['middleware' => 'guest'], function () {
 */
 Auth::routes();
 
+
 Route::group(['middleware' => 'auth'], function () {
+
+    Route::group(['middleware' => 'CheckSubscribe'], function () {
+        // Payment Plan
+        Route::get('customer/subscribe', 'Transactions\PaymentController@payment_plan')->name('payment_plan');
+        Route::get('customer/pay', 'Transactions\PaymentController@pay')->name('pay');
+    });
+
     Route::get('profile', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
     Route::put('profile', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
 
@@ -53,9 +57,10 @@ Route::group(['middleware' => 'auth'], function () {
 | Admin Routes
 |--------------------------------------------------------------------------
 */
-Route::group(['middleware' => 'role:administrator'], function () {
+Route::group(['middleware' => 'role:administrator','prefix'=>'admin'], function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 	Route::resource('user', 'UserController', ['except' => ['show']]);
+    Route::POST('user/status','UserController@status')->name('user.status');
 	// Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'ProfileController@password']);
 });
 
