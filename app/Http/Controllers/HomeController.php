@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
+
 class HomeController extends Controller
 {
     /**
@@ -21,6 +25,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('dashboard');
+        // Create cache db query
+        $users= Cache::remember('users',60*60,function(){
+            return User::whereRoleIs('customer')->count();
+        });
+        $admins= Cache::remember('admins',60*60,function(){
+            return User::whereRoleIs('administrator')->count();
+        });
+        $plans=User::$payment_plan;
+        return view('dashboard',['customers'=>$users,'admins'=>$admins]);
     }
 }

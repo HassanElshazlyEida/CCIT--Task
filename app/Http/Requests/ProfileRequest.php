@@ -13,6 +13,10 @@ class ProfileRequest extends FormRequest
      *
      * @return bool
      */
+    public function __construct()
+    {
+        $this->user_plans = User::$payment_plan;
+    }
     public function authorize()
     {
         return auth()->check();
@@ -28,6 +32,7 @@ class ProfileRequest extends FormRequest
         return [
             'name' => ['required', 'min:3'],
             'email' => ['required', 'email', Rule::unique((new User)->getTable())->ignore(auth()->id())],
+            'payment_plan'=> ['required', 'in:'.implode (",", $this->user_plans)]
         ];
     }
 }

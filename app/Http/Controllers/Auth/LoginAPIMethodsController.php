@@ -26,6 +26,6 @@ class LoginAPIMethodsController extends Controller
 
         $this->login($user);
 
-        return redirect()->route('home');
+        return redirect()->route('profile.edit');
     }
 }
