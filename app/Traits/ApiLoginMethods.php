@@ -17,7 +17,7 @@ trait ApiLoginMethods {
         return Config::get(`services.$method`) ? true:false;
     }
 
-    protected function login($user):bool{
+    protected function login($user):void{
 
         $login_user= User::firstOrCreate([
             'email'=> $user->email ?? null,
@@ -25,12 +25,10 @@ trait ApiLoginMethods {
             'name'=> $user->name,
             'password'=> Hash::make(Str::random(24))
         ]);
-        try {
-            Auth::login($login_user,true);
-        }catch(AuthenticationException $e){
-            return false;
-        }
-        return false;
+        if(!$login_user->hasRole('customer'))
+            $login_user->attachRole('customer');
+
+        Auth::login($login_user,true);
     }
     public function flash(): void {
         Session::flash('error', "An Error Occur");

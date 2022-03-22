@@ -27,6 +27,8 @@ Route::group(['middleware' => 'guest'], function () {
     Route::get('/', function () {
         return view('welcome');
     });
+    // Payment Plan
+    Route::get('payment_plan', 'UserController@payment_plan')->name('payment_plan');
     // API LOGIN METHODS
     Route::group(['prefix' => 'sign-up/{method}'], function () {
         Route::get('redirect', 'Auth\LoginAPIMethodsController@ApiRedirect')->name('sign-up.redirect')->where(['method' => 'facebook|google']);
@@ -40,10 +42,11 @@ Route::group(['middleware' => 'guest'], function () {
 |--------------------------------------------------------------------------
 */
 Auth::routes();
+
 Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-	Route::resource('user', 'App\Http\Controllers\UserController', ['except' => ['show']]);
+	Route::resource('user', 'UserController', ['except' => ['show']]);
 	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
 	Route::put('profile', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
 	Route::get('upgrade', function () {return view('pages.upgrade');})->name('upgrade');

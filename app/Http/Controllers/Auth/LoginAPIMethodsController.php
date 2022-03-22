@@ -24,10 +24,8 @@ class LoginAPIMethodsController extends Controller
 
         $user= Socialite::driver($method)->stateless()->user();
 
-        if(!$this->login($user)) {
-            $this->flash();
-            return redirect()->route('login');
-        }
+        $this->login($user);
+
         return redirect()->route('home');
     }
 }
